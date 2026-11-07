@@ -1,0 +1,221 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Donate Textbook</title>
+    <style>
+        :root {
+            --blue-primary: #0A183D;
+            --blue-hover: #08192D;
+            --green-primary: #F9295A;
+            --white: #ffffff;
+        }
+
+        body {
+         background-color: var(--blue-primary);
+         color: var(--white);
+         max-width: 100vw;
+         overflow-x: hidden;
+         font-family: Arial, sans-serif;
+         margin: 0;
+         padding: 0;
+            
+        }
+
+       /* Header */
+       .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: var(--blue-hover);
+            padding: 15px 30px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--white);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--white);
+            font-size: 16px;
+        }
+
+        .nav-links a:hover {
+            color: var(--green-primary);
+        }
+
+        .user-icon {
+            width: 30px;
+            height: 30px;
+            background-color: var(--green-primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .user-icon img {
+            width: 20px;
+            height: 20px;
+        }
+
+        .form-container {
+            background-color: var(--white);
+            border-radius: 12px;
+            padding: 40px;
+            box-shadow: 0 10px 20px rgba(147, 143, 143, 0.1);
+            width: 100%;
+            max-width: 700px;
+            text-align: center;
+            margin: 100px auto;
+        }
+
+        h1 {
+            color: var(--blue-primary);
+            margin-bottom: 30px;
+            font-size: 32px;
+        }
+
+        .form-group {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            align-items: center;
+        }
+
+        label {
+            font-weight: bold;
+            color: var(--blue-primary);
+            font-size: 16px;
+            width: 35%;
+            text-align: left;
+        }
+
+        input[type="text"], input[type="file"], input[type="number"], textarea, select, button {
+            padding: 12px;
+            font-size: 16px;
+            border: 1px solid var(--blue-primary);
+            border-radius: 6px;
+            width: 60%;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: var(--green-primary);
+            color: var(--white);
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background-color: var(--blue-hover);
+        }
+
+        .star-rating {
+            display: flex;
+            gap: 5px;
+            align-items: center;
+        }
+
+        .star-rating select {
+            width: 100px;
+        }
+    </style>
+</head>
+
+<body>
+          <!-- Header Section -->
+          <div class="header">
+            <div class="logo">Edubridge</div>
+            <div class="nav-links">
+                <a href="{% url 'home' %}">Home</a>
+                <a href="{% url 'Donate' %}">Donate</a>
+                <a href="{% url 'manage_requests' %}">Request</a>
+                <a href="{% url 'alumini' %}">Alumni Chat</a>
+            </div>
+            <div class="user-icon">
+                <img src="{% static 'images/user-icon.png' %}" alt="User">
+            </div>
+        </div>
+
+    <!-- Form Container -->
+    <div class="form-container">
+        <h1>Donate Textbook</h1>
+        <form id="donationForm" method="POST" enctype="multipart/form-data" onsubmit="return confirmDonation()">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="textbook_name">Textbook Name:</label>
+                <input type="text" id="textbook_name" name="textbook_name" required>
+            </div>
+            <div class="form-group">
+                <label for="author_name">Author Name:</label>
+                <input type="text" id="author_name" name="author_name" required>
+            </div>
+            <div class="form-group">
+                <label for="subject">Subject:</label>
+                <input type="text" id="subject" name="subject" required>
+            </div>
+            <div class="form-group">
+                <label for="semester">Semester (1-8):</label>
+                <input type="number" id="semester" name="semester" min="1" max="8" required>
+            </div>
+            <div class="form-group">
+                <label for="image">Upload Image:</label>
+                <input type="file" id="image" name="image" accept="image/*" required>
+            </div>
+            <div class="form-group">
+                <label for="feedback">Feedback (Optional):</label>
+                <textarea id="feedback" name="feedback" rows="3" placeholder="Your feedback..."></textarea>
+            </div>
+            <div class="form-group star-rating">
+                <label for="rating">Rating:</label>
+                <select id="rating" name="rating">
+                    <option value="" disabled selected>-- Choose --</option>
+                    <option value="1">1 Star</option>
+                    <option value="2">2 Stars</option>
+                    <option value="3">3 Stars</option>
+                    <option value="4">4 Stars</option>
+                    <option value="5">5 Stars</option>
+                </select>
+            </div>
+            <button type="submit">Donate Now</button>
+        </form>
+    </div>
+
+    <script>
+        function toggleMenu() {
+            const menu = document.getElementById('popupMenu');
+            menu.classList.toggle('open');
+        }
+
+        // Close menu when clicking outside
+        document.addEventListener('click', function (e) {
+            const menu = document.getElementById('popupMenu');
+            const hamburger = document.querySelector('.hamburger');
+
+            if (!menu.contains(e.target) && !hamburger.contains(e.target)) {
+                menu.classList.remove('open');
+            }
+        });
+
+        // Confirm donation before submitting
+        function confirmDonation() {
+            return confirm('Are you sure you want to donate this textbook?');
+        }
+    </script>
+</body>
+</html>

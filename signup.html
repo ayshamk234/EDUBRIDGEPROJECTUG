@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edubridge Signup</title>
+    <style>
+        :root {
+            --white: #ffffff;
+            --blue-primary: #0A183D;
+            --blue-hover: #212be7;
+            --gray-border: #ccc;
+            --gray-text: #666;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            background-image: url('https://www.transparenttextures.com/patterns/wood-pattern.png');
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .signup-container {
+            background-color: var(--white);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 90%; /* Adjusted for smaller screens */
+            max-width: 300px;
+            text-align: center;
+            max-height: 80vh; /* Reduced height */
+            overflow-y: auto; /* Enables scrolling */
+            scrollbar-width: none; /* Hides scrollbar in Firefox */
+        }
+
+        .signup-container::-webkit-scrollbar {
+            display: none; /* Hides scrollbar in Chrome, Edge, Safari */
+        }
+
+        .signup-container h2 {
+            color: var(--blue-primary);
+            margin-bottom: 15px;
+        }
+
+        .form-group {
+            margin-bottom: 10px;
+            text-align: left;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 8px; /* Reduced padding */
+            border: 1px solid var(--gray-border);
+            border-radius: 5px;
+            box-sizing: border-box;
+            font-size: 14px; /* Adjusted font size */
+        }
+
+        .form-group select {
+            background-color: #fafafa;
+        }
+
+        .form-group input::placeholder,
+        .form-group select {
+            color: var(--gray-text);
+            font-style: italic;
+        }
+
+        .form-group button {
+            width: 100%;
+            padding: 10px;
+            background-color: var(--blue-primary);
+            color: var(--white);
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px; /* Adjusted font size */
+        }
+
+        .form-group button:hover {
+            background-color: var(--blue-hover);
+        }
+
+        label {
+            color: var(--gray-text);
+            font-size: 13px;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        input,
+        select {
+            font-size: 14px;
+        }
+
+        p {
+            font-size: 13px;
+            color: var(--gray-text);
+        }
+
+        p a {
+            color: var(--blue-primary);
+            text-decoration: none;
+        }
+
+        p a:hover {
+            color: var(--blue-hover);
+        }
+
+        .container {
+            display: flex;
+            background-color: var(--white);
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            width: 100%;
+            max-width: 700px;
+        }
+
+        .info-section {
+            background-color: var(--blue-primary);
+            color: var(--white);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 40%;
+        }
+
+        .info-section img {
+            max-width: 80px;
+            margin-bottom: 10px;
+        }
+
+        .info-section h1 {
+            font-size: 20px;
+            margin: 10px 0;
+        }
+
+        .info-section p {
+            font-size: 14px;
+            text-align: center;
+            margin: 0;
+            color: #ffffff;
+        }
+
+        .divider {
+            width: 2px;
+            background-color: var(--gray-border);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+                width: 90%;
+                margin: 0 auto;
+            }
+
+            .info-section {
+                width: 100%;
+                padding: 15px;
+                text-align: center;
+            }
+
+            .signup-container {
+                width: 90%;
+                max-width: 350px;
+                margin: 0 auto;
+            }
+
+            .divider {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="info-section">
+            <img src="static/images/logo.png" alt="Edubridge Logo">
+            <h1>Welcome to Edubridge</h1>
+            <p><strong>Connect. Share. Learn.</strong></p>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="signup-container">
+            <h2>Signup</h2>
+            <form action="{% url 'signup_view' %}" method="POST">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="role">Select Role</label>
+                    <select id="role" name="role" required>
+                        <option value="stcians" {% if request.POST.role == 'stcians' %}selected{% endif %}>STCians</option>
+                        <option value="student_other" {% if request.POST.role == 'student_other' %}selected{% endif %}>Student (Other Colleges)</option>
+                        <option value="teacher" {% if request.POST.role == 'teacher' %}selected{% endif %}>Teacher</option>
+                        <option value="alumni" {% if request.POST.role == 'alumni' %}selected{% endif %}>Alumni</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username" placeholder="Enter your username" value="{{ request.POST.username }}" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" placeholder="Enter your email address" value="{{ request.POST.email }}" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" placeholder="Enter your password" required>
+                </div>
+                <div class="form-group">
+                    <label for="phone">Phone Number</label>
+                    <input type="tel" id="phone" name="phone" placeholder="Enter your phone number" pattern="[0-9]{10}" value="{{ request.POST.phone }}" required>
+                </div>
+                <div class="form-group">
+                    <label for="department_name">Department Name</label>
+                    <input type="text" id="department_name" name="department_name" placeholder="Enter your department name" value="{{ request.POST.department_name }}" required>
+                </div>
+                <div class="form-group">
+                    <label for="semester">Semester</label>
+                    <input type="text" id="semester" name="semester" placeholder="Enter your semester" value="{{ request.POST.semester }}" required>
+                </div>
+                <div class="form-group">
+                    <label for="admission_number">Admission Number</label>
+                    <input type="text" id="admission_number" name="admission_number" placeholder="Enter your admission number" value="{{ request.POST.admission_number }}" required>
+                </div>
+                <div class="form-group">
+                    <button type="submit">Signup</button>
+                </div>
+                <p>Already have an account? <a href="{% url 'login_view' %}">Login here</a></p>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

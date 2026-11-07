@@ -1,0 +1,470 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edubridge - Home</title>
+    <style>
+        :root {
+            --primary-color: #0A183D;
+            --secondary-color: #08192D;
+            --highlight-color: #F9295A;
+            --text-color-light: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: var(--primary-color);
+            color: var(--text-color-light);
+            max-width: 100vw;
+            overflow-x: hidden;
+        }
+        .wave-container {  
+  height: 40vh;
+  background-color: #0a183d;
+  position: relative;
+}
+
+.wave-container::before {   
+  content: "";
+  width: 100%;
+  height: 167px;
+  position: absolute;
+  bottom: -0.3%;
+  left: 0;
+  background-size: auto;
+  background-repeat: repeat no-repeat;
+  background-position: 41vw bottom;
+  background-image: url("data:image/svg+xml;utf8,<svg viewBox='0 0 1200  109' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M0 80L50 75C100 70 200 60 300 41C400 21 500 -8 600 1C700 11 800 60 900 80C1000 100 1100 90 1150 85L1200 80V110H1150C1100 110 1000 110 900 110C800 110 700 110 600 110C500 110 400 110 300 110C200 110 100 110 50 110H0V80Z' fill='%23ffffff'/></svg>");
+}
+
+@media(max-width:850px) {
+  .wave-container::before {    
+    height: 83.5px
+  }  
+}
+.wave-container2 {  
+  height: 40vh;
+  background-color: #ffffff;
+  position: relative;
+}
+
+.wave-container2::before {   
+  content: "";
+  width: 100%;
+  height: 167px;
+  position: absolute;
+  bottom: -0.3%;
+  left: 0;
+  background-size: auto;
+  background-repeat: repeat no-repeat;
+  background-position: 41vw bottom;
+  background-image: url("data:image/svg+xml;utf8,<svg viewBox='0 0 1200  109' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M0 80L50 75C100 70 200 60 300 41C400 21 500 -8 600 1C700 11 800 60 900 80C1000 100 1100 90 1150 85L1200 80V110H1150C1100 110 1000 110 900 110C800 110 700 110 600 110C500 110 400 110 300 110C200 110 100 110 50 110H0V80Z' fill='%230a183d'/></svg>");
+}
+
+@media(max-width:850px) {
+  .wave-container2::before {    
+    height: 83.5px
+  }  
+}
+
+        /* Header */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: var(--secondary-color);
+            padding: 15px 30px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--text-color-light);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-color-light);
+            font-size: 16px;
+        }
+
+        .nav-links a:hover {
+            color: var(--highlight-color);
+        }
+
+        .user-icon {
+            width: 30px;
+            height: 30px;
+            background-color: var(--highlight-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .user-icon img {
+            width: 20px;
+            height: 20px;
+        }
+
+        /* Main Section */
+        .main-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 50px;
+            min-height: 20%;
+        }
+
+        .main-section .content {
+            max-width: 50%;
+        }
+
+        .main-section h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+
+        .main-section p {
+            font-size: 18px;
+            margin-bottom: 30px;
+            color: var(--text-color-light);
+        }
+
+        .button-container {
+            display: flex;
+            gap: 20px;
+        }
+
+        .button {
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .button-primary {
+            background-color: var(--highlight-color);
+            color: var(--text-color-light);
+        }
+
+        .button-primary:hover {
+            transform: scale(1.05);
+        }
+
+        .button-secondary {
+            background-color: var(--text-color-light);
+            color: var(--highlight-color);
+        }
+
+        .button-secondary:hover {
+            transform: scale(1.05);
+        }
+
+        .main-section img {
+            max-width: 40%;
+            border-radius: 10px;
+        }
+
+        /* SVG Divider */
+        .divider {
+            margin: 0;
+        }
+        .bg {
+                background-color: #fdfdfd;
+        }
+        /* Search Section */
+        .search-section {
+            background-color: var(--text-color-light);
+            padding: 20px 50px;
+        }
+
+        .search-container {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            align-items: center;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .filter-select {
+            padding: 8px 12px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+            color: var(--secondary-color);
+        }
+
+        .search-input {
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1rem;
+            width: 250px;
+        }
+
+        .search-button {
+            background-color: var(--highlight-color);
+            color: var(--text-color-light);
+            padding: 8px 12px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            font-size: 1rem;
+        }
+
+        .search-button:hover {
+            background-color: #C81F48;
+        }
+                /* Cards */
+                .horizontal-scroll-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+    padding: 20px;
+    background-image: url('{% static "images/bg_search.jpg" %}');
+    background-size: cover;
+    background-position: center;
+    border-radius: 10px;
+}
+
+.card {
+    background-color: rgba(255, 255, 255, 0.9); /* Slight transparency for better contrast */
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+    text-align: center;
+    overflow: hidden; /* Ensures content does not overflow */
+    transition: transform 0.3s, box-shadow 0.3s;
+    padding: 0; /* Removed padding to rely on better content spacing */
+}
+
+.card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+}
+
+.card img {
+    width: 100%;
+    border-radius: 10px 10px 0 0; /* Rounded corners for the top */
+    max-height: 180px; /* Constrain image height */
+    object-fit: cover; /* Ensures the image maintains proportions */
+    margin-bottom: 0; /* Adjusted spacing */
+}
+
+.card-content {
+    padding: 15px;
+}
+
+.card-content h3 {
+    font-size: 1.2rem;
+    color: #08192D;
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+.card-content p {
+    font-size: 0.95rem;
+    color: #555; /* Neutral color for text */
+    margin: 4px 0;
+}
+
+.no-results {
+    font-size: 1.5rem;
+    color: #444;
+    text-align: center;
+    background-color: rgba(255, 255, 255, 0.8); /* Slight background for readability */
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+        /* Stats Section */
+        .stats-section {
+            background-color: var(--primary-color);
+            padding: 50px 20px;
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+        }
+
+        .stat-card {
+            background-color: var(--secondary-color);
+            padding: 20px 30px;
+            border-radius: 10px;
+            text-align: center;
+            width: 250px;
+            color: var(--text-color-light);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-card h3 {
+            font-size: 36px;
+            margin-bottom: 10px;
+        }
+
+        .stat-card p {
+            font-size: 18px;
+        }
+
+        /* Footer */
+        .footer {
+            background-color: var(--secondary-color);
+            color: var(--text-color-light);
+            text-align: center;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .footer p {
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Section -->
+    <div class="header">
+        <div class="logo">Edubridge</div>
+        <div class="nav-links">
+            <a href="{% url 'home' %}">Home</a>
+            <a href="{% url 'Donate' %}">Donate</a>
+            <a href="{% url 'manage_requests' %}">Request</a>
+            <a href="{% url 'alumini' %}">Alumni Chat</a>
+        </div>
+        <div class="user-icon">
+            <a href="{% url 'user_dashboard' %}">
+                <img src="{% static 'images/user-icon.png' %}" alt="User">
+            </a>
+        </div>
+    </div>
+
+    <!-- Main Section -->
+    <div class="main-section">
+        <div class="content">
+            <h1>Welcome to Edubridge</h1>
+            <p>Connecting students through book donations, study materials, and alumni insights.</p>
+            <div class="button-container">
+                <button class="button button-primary">Share</button>
+                <button class="button button-secondary">Connect</button>
+            </div>
+        </div>
+        <img src="{% static 'images/side.png' %}" alt="Edubridge Illustration">
+    </div>
+
+    <div class="bg">
+    <div class="wave-container"></div>
+    <!-- Search Section -->
+    <form method="GET" action="{% url 'home' %}" style="text-align: center; margin-top: 20px;">
+        <input
+            type="text"
+            name="q"
+            value="{{ query|default:'' }}"
+            placeholder="Search for books or study materials..."
+            style="width: 300px; padding: 8px;"
+            required
+        />
+        <select name="filter_by" style="padding: 8px;">
+            <option value="textbook_name" {% if filter_by == "textbook_name" %}selected{% endif %}>
+                Textbook Name
+            </option>
+            <option value="author_name" {% if filter_by == "author_name" %}selected{% endif %}>
+                Author Name
+            </option>
+            <option value="subject" {% if filter_by == "subject" %}selected{% endif %}>
+                Subject
+            </option>
+            <option value="semester" {% if filter_by == "semester" %}selected{% endif %}>
+                Semester
+            </option>
+        </select>
+        <button type="submit" style="padding: 8px 15px;">Search</button>
+    </form>
+    
+    <div class="horizontal-scroll-container" style="width: 70%; margin: 0 auto;">
+        {% if not books and not materials %}
+            <div class="no-results">
+                Search For the Required Material
+            </div>
+        {% else %}
+            {% for book in books %}
+            <div class="card" onclick="location.href='{% url 'book_detail' book.id %}'">
+                {% if book.image %}
+                    <img src="{{ book.image.url }}" alt="{{ book.textbook_name }}">
+                {% else %}
+                    <img src="{% static 'images/default_book.png' %}" alt="Default Image">
+                {% endif %}
+                <div class="card-content">
+                    <h3>{{ book.textbook_name }}</h3>
+                    <p>Author: {{ book.author_name }}</p>
+                    <p>Subject: {{ book.subject }}</p>
+                    <p>Semester: {{ book.semester }}</p>
+                </div>
+            </div>
+            {% endfor %}
+    
+            {% for material in materials %}
+            <div class="card" onclick="location.href='{% url 'study_material_detail' material.id %}'">
+                {% if material.image %}
+                    <img src="{{ material.image.url }}" alt="{{ material.material_name }}">
+                {% else %}
+                    <img src="{% static 'images/4.jpg' %}" alt="Default Material Image">
+                {% endif %}
+                <div class="card-content">
+                    <h3>{{ material.material_name }}</h3>
+                    <p>Subject: {{ material.subject }}</p>
+                    <p>Module: {{ material.module }}</p>
+                    <p>Semester: {{ material.semester }}</p>
+                </div>
+            </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+    </div>
+         
+</div>
+<div class="wave-container2"></div>
+    <!-- Stats Section -->
+    <div class="stats-section">
+        <div class="stat-card" style="background-color: #C81F48;">
+            <!-- <h3>{{ user_count }}</h3> -->
+            <h3>65</h3>
+            <p> Total Users</p>
+        </div>
+        <div class="stat-card" style="background-color: #C81F48;">
+            <!-- <h3>{{ book_count }}</h3> -->
+            <h3>65</h3>
+            <p>Total Books</p>
+        </div>
+        <div class="stat-card" style="background-color: #C81F48;" > 
+            <!-- <h3>{{ alumni_count }}</h3> -->
+            <h3>65</h3>
+            <p>Total Alumni</p>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <p>&copy; 2025 Edubridge. All rights reserved.</p>
+    </div>
+</body>
+</html>

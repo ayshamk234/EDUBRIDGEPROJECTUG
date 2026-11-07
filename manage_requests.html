@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Requests</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+        }
+        .container {
+            width: 90%;
+            margin: 20px auto;
+        }
+        .section-title {
+            font-size: 24px;
+            margin-bottom: 20px;
+            text-align: center;
+            color: #333;
+        }
+        .request-card, .notification-card {
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 16px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+        }
+        .book-image-container {
+            flex: 0 0 100px;
+            text-align: center;
+        }
+        .book-image {
+            width: 80px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+        .details-container {
+            flex: 1;
+        }
+        .details-container h2 {
+            margin-top: 0;
+            font-size: 20px;
+        }
+        .details-container p {
+            margin: 5px 0;
+            font-size: 14px;
+            color: #555;
+        }
+        .btn {
+            padding: 8px 16px;
+            font-size: 14px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .btn.accept {
+            background-color: #28a745;
+            color: #fff;
+        }
+        .btn.reject {
+            background-color: #dc3545;
+            color: #fff;
+        }
+        .notification-card {
+            flex-direction: column;
+        }
+        .notification-card h4 {
+            margin: 0 0 10px;
+            font-size: 18px;
+            color: #333;
+        }
+        .notification-card p {
+            margin: 5px 0;
+            font-size: 14px;
+            color: #555;
+        }
+        .notification-card small {
+            font-size: 12px;
+            color: #777;
+        }
+        .no-requests, .no-notifications {
+            text-align: center;
+            color: #777;
+            font-size: 16px;
+        }
+        /* Footer */
+        .footer {
+            text-align: center;
+            background-color: #333;
+            color: white;
+            padding: 15px 10px;
+        }
+
+        .footer a {
+            color: var(--primary-color);
+            text-decoration: none;
+            margin: 0 10px;
+        }
+               /* Header Style */
+               .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #ffffff;
+            padding: 15px 30px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #333;
+            font-size: 16px;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-color);
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+        }
+
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background-color: var(--primary-color);
+            margin: 4px 0;
+        }
+
+        .popup-menu {
+            display: none;
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 200px;
+            height: 100vh;
+            background-color: #ffffff;
+            box-shadow: -4px 0 6px rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            z-index: 20;
+            text-align: center;
+        }
+
+        .popup-menu a {
+            display: block;
+            text-decoration: none;
+            color: #333;
+            margin: 20px 0;
+            font-size: 16px;
+        }
+
+        .popup-menu a:hover {
+            color: var(--primary-color);
+        }
+
+        @media (max-width: 768px) {
+            .hamburger {
+                display: flex;
+            }
+
+            .nav-links {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                background-color: var(--header-bg-color);
+                top: 60px;
+                right: 0;
+                width: 200px;
+                border-radius: 5px;
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .popup-menu.open {
+                display: block;
+            }
+        }
+
+    </style>
+</head>
+<body>
+    <!-- Header Section -->
+    <div class="header">
+        <div class="logo">Edubridge</div>
+        <div class="nav-links">
+            <a href="{% url 'home' %}">Home</a>
+            <a href="{% url 'Donate' %}">Donate</a>
+            <a href="{% url 'manage_requests' %}">Request</a>
+            <a href="{% url 'alumini' %}">Alumni Chat</a>
+        </div>
+        <div class="hamburger" onclick="toggleMenu()">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </div>
+    
+    <!-- Popup Menu -->
+    <div id="popupMenu" class="popup-menu">
+        <a href="{% url 'home' %}">Home</a>
+        <a href="{% url 'Donate' %}">Donate</a>
+        <a href="{% url 'manage_requests' %}">Request</a>
+        <a href="{% url 'alumini' %}">Alumni Chat</a>
+    </div>
+
+    <div class="container">
+        <!-- Request Section -->
+        <h2 class="section-title">Manage Requests</h2>
+        {% for request in donation_requests %}
+        <div class="request-card">
+            <div class="book-image-container">
+                {% if request.book.image %}
+                    <img src="{{ request.book.image.url }}" alt="{{ request.book.textbook_name }}" class="book-image">
+                {% endif %}
+            </div>
+            <div class="details-container">
+                <h2>{{ request.book.textbook_name }}</h2>
+                <p><strong>Author:</strong> {{ request.book.author_name }}</p>
+                <p><strong>Subject:</strong> {{ request.book.subject }}</p>
+                <p><strong>Semester:</strong> {{ request.book.semester }}</p>
+                <p><strong>Requested On:</strong> {{ request.created_at|date:"Y-m-d" }}</p>
+                <p><strong>Donation Date:</strong> {{ request.donation_date }}</p>
+                <p><strong>Donation Time:</strong> {{ request.donation_time }}</p>
+                <p><strong>Place:</strong> {{ request.donation_place }}</p>
+                <p><strong>Status:</strong> {{ request.status }}</p>
+                {% if request.status == "Pending" %}
+                <form method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="request_id" value="{{ request.id }}">
+                    <button class="btn accept" name="action" value="accept">Accept</button>
+                    <button class="btn reject" name="action" value="reject">Reject</button>
+                </form>
+                {% endif %}
+            </div>
+        </div>
+        {% empty %}
+        <p class="no-requests">No pending requests at the moment.</p>
+        {% endfor %}
+
+<!-- Notifications Section -->
+<h2 class="section-title">Notifications</h2>
+{% for notification in notifications %}
+<div class="notification-card">
+    <h4>{{ notification.book.textbook_name }}</h4>
+
+    {% if user == notification.donor %}
+        <!-- Donor's View -->
+        <p><strong>Receiver:</strong> {{ notification.receiver.username }}</p>
+        <p><strong>Receiver Phone:</strong> {{ notification.receiver.phone_number }}</p>
+        <p><strong>Donation Time:</strong> {{ notification.donation_request.donation_time }}</p>
+        <p><strong>Donation Date:</strong> {{ notification.donation_request.donation_date }}</p>
+        <p><strong>Donation Place:</strong> {{ notification.donation_request.donation_place }}</p>
+    {% elif user == notification.receiver %}
+        <!-- Receiver's View -->
+        <p><strong>Donor:</strong> {{ notification.donor.username }}</p>
+        <p><strong>Donor Phone:</strong> {{ notification.profile.phone_number }}</p>
+        <p><strong>Donation Time:</strong> {{ notification.donation_request.donation_time }}</p>
+        <p><strong>Donation Date:</strong> {{ notification.donation_request.donation_date }}</p>
+        <p><strong>Donation Place:</strong> {{ notification.donation_request.donation_place }}</p>
+    {% endif %}
+
+    <p><strong>Status:</strong> {{ notification.status }}</p>
+    <small>{{ notification.created_at|date:"Y-m-d H:i" }}</small>
+</div>
+{% empty %}
+<p class="no-notifications">No notifications available at the moment.</p>
+{% endfor %}
+
+
+    </div>
+    <script>
+        function toggleMenu() {
+            const menu = document.getElementById('popupMenu');
+            menu.classList.toggle('open');
+        }
+
+        // Close popup menu on outside click
+        document.addEventListener('click', function (e) {
+            const menu = document.getElementById('popupMenu');
+            const hamburger = document.querySelector('.hamburger');
+
+            if (!menu.contains(e.target) && !hamburger.contains(e.target)) {
+                menu.classList.remove('open');
+            }
+        });
+    </script>
+    <script src="https://website-widgets.pages.dev/dist/sienna.min.js" defer></script>
+</body>
+</html>

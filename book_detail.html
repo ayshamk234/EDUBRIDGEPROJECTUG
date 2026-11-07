@@ -1,0 +1,416 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ book.textbook_name }} - Details</title>
+    <style>
+        /* General Reset */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f3f4f6;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        /* Header and Navigation */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #ffffff;
+            padding: 15px 30px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #007bff;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #333;
+            font-size: 16px;
+        }
+
+        .nav-links a:hover {
+            color: #007bff;
+        }
+
+        /* Main Container */
+        .book-detail-container {
+            display: flex;
+            flex-wrap: wrap;
+            max-width: 900px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .book-image-container {
+            flex: 1;
+            text-align: center;
+        }
+
+        .book-image {
+            width: 100%;
+            max-width: 250px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        .donor-info {
+            margin-top: 10px;
+            font-size: 0.9rem;
+            color: #555;
+        }
+
+        .details-container {
+            flex: 2;
+            padding-left: 30px;
+        }
+
+        .details-container h2 {
+            color: #007bff;
+            font-size: 2rem;
+        }
+
+        .details-container p {
+            font-size: 1.1rem;
+            color: #333;
+            margin: 10px 0;
+        }
+
+        .book-now-btn {
+            display: inline-block;
+            background-color: #007bff;
+            color: white;
+            padding: 14px 32px;
+            margin-top: 20px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            text-align: center;
+            font-weight: bold;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            text-decoration: none;
+            max-width: 250px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .book-now-btn:hover {
+            background-color: #0056b3;
+            transform: translateY(-4px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .book-now-btn:active {
+            transform: translateY(2px);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Book Collection Form (HTML2) */
+        .form-container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            display: none; /* Hidden initially */
+        }
+
+        .form-container h2 {
+            text-align: center;
+            color: #333;
+        }
+
+        .form-container form {
+            margin-top: 20px;
+        }
+
+        .form-container label {
+            display: block;
+            font-weight: bold;
+            margin: 10px 0 5px;
+        }
+
+        .form-container select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .form-container button {
+            display: block;
+            width: 100%;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            border-radius: 4px;
+            margin-top: 10px;
+        }
+
+        .form-container button:hover {
+            background-color: #0056b3;
+        }
+           /* Footer */
+           .footer {
+            text-align: center;
+            background-color: #333;
+            color: white;
+            padding: 15px 10px;
+        }
+
+        .footer a {
+            color: var(--primary-color);
+            text-decoration: none;
+            margin: 0 10px;
+        }
+               /* Header Style */
+               .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #ffffff;
+            padding: 15px 30px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #333;
+            font-size: 16px;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-color);
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+        }
+
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background-color: var(--primary-color);
+            margin: 4px 0;
+        }
+
+        .popup-menu {
+            display: none;
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 200px;
+            height: 100vh;
+            background-color: #ffffff;
+            box-shadow: -4px 0 6px rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            z-index: 20;
+            text-align: center;
+        }
+
+        .popup-menu a {
+            display: block;
+            text-decoration: none;
+            color: #333;
+            margin: 20px 0;
+            font-size: 16px;
+        }
+
+        .popup-menu a:hover {
+            color: var(--primary-color);
+        }
+
+        @media (max-width: 768px) {
+            .hamburger {
+                display: flex;
+            }
+
+            .nav-links {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                background-color: var(--header-bg-color);
+                top: 60px;
+                right: 0;
+                width: 200px;
+                border-radius: 5px;
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .popup-menu.open {
+                display: block;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header Section -->
+    <div class="header">
+        <div class="logo">Edubridge</div>
+        <div class="nav-links">
+            <a href="{% url 'home' %}">Home</a>
+            <a href="{% url 'Donate' %}">Donate</a>
+            <a href="{% url 'manage_requests' %}">Request</a>
+            <a href="{% url 'alumini' %}">Alumni Chat</a>
+        </div>
+        <div class="hamburger" onclick="toggleMenu()">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </div>
+    
+    <!-- Popup Menu -->
+    <div id="popupMenu" class="popup-menu">
+        <a href="{% url 'home' %}">Home</a>
+        <a href="{% url 'Donate' %}">Donate</a>
+        <a href="{% url 'manage_requests' %}">Request</a>
+        <a href="{% url 'alumini' %}">Alumni Chat</a>
+    </div>
+
+
+    <!-- Book Details -->
+    <div class="book-detail-container">
+        <div class="book-image-container">
+            {% if book.image %}
+                <img src="{{ book.image.url }}" alt="{{ book.textbook_name }}" class="book-image">
+            {% else %}
+                <img src="{% static 'images/default_book.png' %}" alt="Default Book Image" class="book-image">
+            {% endif %}
+            <div class="donor-info">
+                <p><strong>Donor:</strong> {{ book.user.username }}</p>
+                <p><strong>Status:</strong> {{ book.status }}</p>
+            </div>
+        </div>
+    
+        <div class="details-container">
+            <h2>{{ book.textbook_name }}</h2>
+            <p><strong>Author:</strong> {{ book.author_name }}</p>
+            <p><strong>Subject:</strong> {{ book.subject }}</p>
+            <p><strong>Semester:</strong> {{ book.semester }}</p>
+    
+            {% if book.rating and book.feedback %}
+                <p><strong>Rating:</strong> {{ book.rating }} / 5</p>
+                <p><strong>Feedback:</strong> {{ book.feedback }}</p>
+            {% else %}
+                <p><strong>Rating:</strong> Not Rated Yet</p>
+                <p><strong>Feedback:</strong> No Feedback Provided</p>
+            {% endif %}
+    
+            <a href="javascript:void(0)" class="book-now-btn" onclick="showForm()">Request Book</a>
+        </div>
+    </div>
+    
+   <!-- Book Request Form -->
+<div class="form-container" id="bookForm">
+    <h2>Send Book Request</h2>
+    <form method="POST">
+        {% csrf_token %}
+        <!-- Place Selection -->
+        <label for="place">Select Place</label>
+        <select id="place" name="place" required>
+            <option value="">-- Select a Place --</option>
+            <option value="Academic Block (Near Placement Cell)">Academic Block (Near Placement Cell)</option>
+            <option value="Administrative Block (Near Office)">Administrative Block (Near Office)</option>
+            <option value="Jubilee Block (Near Enquiry)">Jubilee Block (Near Enquiry)</option>
+        </select>
+
+        <!-- Time Selection -->
+        <label for="time">Select Time</label>
+        <select name="time" required>
+            <option value="">-- Select a Time --</option>
+            <option value="8:50 AM">8:50 AM</option>
+            <option value="10:50 AM">10:50 AM</option>
+            <option value="12:15 PM">12:15 PM</option>
+            <option value="3:00 PM">3:00 PM</option>
+            <option value="3:30 PM">3:30 PM</option>
+        </select>
+
+        <!-- Date Selection -->
+        <label for="date">Select Date</label>
+        <select id="date" name="date" required>
+            <option value="">-- Select a Date --</option>
+            {% for date in dates %}
+                <option value="{{ date }}">{{ date }}</option>
+            {% endfor %}
+        </select>
+
+        <button type="submit">Send Request</button>
+    </form>
+</div>
+
+ 
+    <script>
+    function showForm() {
+        document.getElementById("bookForm").style.display = "block";
+    }
+    </script>
+    <script>
+        function toggleMenu() {
+            const menu = document.getElementById('popupMenu');
+            menu.classList.toggle('open');
+        }
+
+        // Close popup menu on outside click
+        document.addEventListener('click', function (e) {
+            const menu = document.getElementById('popupMenu');
+            const hamburger = document.querySelector('.hamburger');
+
+            if (!menu.contains(e.target) && !hamburger.contains(e.target)) {
+                menu.classList.remove('open');
+            }
+        });
+    </script>
+    <script src="https://website-widgets.pages.dev/dist/sienna.min.js" defer></script>
+</body>
+</html>

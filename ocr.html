@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OCR - Upload File</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+        }
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            background: #ffffff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .header {
+            background: #007bff;
+            color: #ffffff;
+            padding: 20px;
+            text-align: center;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+        .form-container {
+            padding: 20px;
+        }
+        .form-container label {
+            font-size: 16px;
+            color: #333;
+            display: block;
+            margin-bottom: 8px;
+        }
+        .form-container input[type="file"] {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .form-container button {
+            display: inline-block;
+            background: #007bff;
+            color: #ffffff;
+            border: none;
+            border-radius: 4px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .form-container button:hover {
+            background: #0056b3;
+        }
+        .output {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            white-space: pre-wrap;
+        }
+        .output h3 {
+            margin: 0 0 10px;
+            font-size: 18px;
+            color: #007bff;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            padding: 10px;
+            font-size: 14px;
+            color: #777;
+        }
+        .footer a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        .footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>OCR File Uploader</h1>
+        </div>
+        <div class="form-container">
+            <form id="ocrForm">
+                <label for="fileInput">Select a file (image, PDF, PPT):</label>
+                <input type="file" id="fileInput" name="file" accept=".jpg,.jpeg,.png,.gif,.pdf,.ppt,.pptx" required>
+                <button type="submit">Convert to Text</button>
+            </form>
+            <div id="result" class="output" style="display: none;">
+                <h3>Extracted Text:</h3>
+                <div id="text"></div>
+            </div>
+        </div>
+        <div class="footer">
+            Powered by <a href="https://ocr.space/" target="_blank">OCR.Space</a>
+        </div>
+    </div>
+
+    <script>
+        const ocrForm = document.getElementById('ocrForm');
+        const fileInput = document.getElementById('fileInput');
+        const resultDiv = document.getElementById('result');
+        const textDiv = document.getElementById('text');
+
+        ocrForm.addEventListener('submit', function (event) {
+            event.preventDefault(); // Prevent form submission and page reload
+            
+            const file = fileInput.files[0];
+            if (!file) {
+                alert('Please select a file!');
+                return;
+            }
+
+            // Check file type
+            const allowedExtensions = ['jpg', 'jpeg', 'png', 'gif', 'pdf', 'ppt', 'pptx'];
+            const fileExtension = file.name.split('.').pop().toLowerCase();
+            if (!allowedExtensions.includes(fileExtension)) {
+                alert('Unsupported file type. Please upload an image, PDF, or PowerPoint file.');
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('apikey', 'K82805300188957'); // Replace with your valid API key
+            formData.append('language', 'eng');
+            formData.append('isOverlayRequired', false); // Set true if you want OCR overlay data
+            formData.append('file', file);
+
+            // Show loading message
+            textDiv.textContent = 'Processing... Please wait.';
+            resultDiv.style.display = 'block';
+
+            fetch('https://api.ocr.space/parse/image', {
+                method: 'POST',
+                body: formData,
+            })
+                .then((response) => response.json())
+                .then((data) => {
+                    if (data.ParsedResults && data.ParsedResults.length > 0) {
+                        textDiv.textContent = data.ParsedResults[0].ParsedText; // Display the extracted text
+                    } else {
+                        textDiv.textContent = `Error: ${data.ErrorMessage || 'No text found'}`;
+                    }
+                })
+                .catch((error) => {
+                    textDiv.textContent = `Error: ${error.message}`;
+                });
+        });
+    </script>
+</body>
+</html>

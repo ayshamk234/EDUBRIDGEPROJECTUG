@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+        }
+        .container {
+            padding: 20px;
+        }
+        .section {
+            margin-bottom: 20px;
+        }
+        .section h2 {
+            color: #4CAF50;
+        }
+        .button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .button:hover {
+            background-color: #45a049;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>User Dashboard</h1>
+</header>
+
+<div class="container">
+    <div class="section">
+        <h2 id="username">{{ user.username }}</h2>
+        <p><strong>Email:</strong> {{ user.email }}</p>
+        <p><strong>Phone Number:</strong> {{ user.phone_number }}</p>
+        <p><strong>Semester:</strong> {{ user.semester }}</p>
+        <button class="button" onclick="openEditPopup()">Edit Details</button>
+    </div>
+
+    <div class="section">
+        <h2>Items Shared by You</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Book Title</th>
+                    <th>Author</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for book in shared_books %}
+                <tr>
+                    <td>{{ book.title }}</td>
+                    <td>{{ book.author }}</td>
+                    <td>{{ book.status }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    function openEditPopup() {
+        Swal.fire({
+            title: 'Edit Details',
+            html:
+                `<input id="phone" class="swal2-input" placeholder="Phone Number" value="{{ user.profile.phone_number }}">
+                 <input id="semester" class="swal2-input" placeholder="Semester" value="{{ user.profile.semester }}">`,
+            showCancelButton: true,
+            confirmButtonText: 'Save',
+            preConfirm: () => {
+                const phone = document.getElementById('phone').value;
+                const semester = document.getElementById('semester').value;
+
+                if (!phone || !semester) {
+                    Swal.showValidationMessage('Please enter both fields');
+                }
+
+                return { phone, semester };
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                fetch('/update-profile/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': '{{ csrf_token }}'
+                    },
+                    body: JSON.stringify(result.value)
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        Swal.fire('Success', 'Details updated successfully!', 'success')
+                        .then(() => location.reload());
+                    } else {
+                        Swal.fire('Error', 'Failed to update details.', 'error');
+                    }
+                });
+            }
+        });
+    }
+</script>
+
+</body>
+</html>

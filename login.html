@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edubridge Login</title>
+    <style>
+        :root {
+            --white: #ffffff;
+            --blue-primary: #0A183D;
+            --blue-hover: #212be7;
+            --gray-border: #ccc;
+            --gray-text: #666;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            background-image: url('https://www.transparenttextures.com/patterns/wood-pattern.png');
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            display: flex;
+            background-color: var(--white);
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            width: 100%;
+            max-width: 800px;
+        }
+
+        .info-section {
+            background-color: var(--blue-primary);
+            color: var(--white);
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 40%;
+        }
+
+        .info-section img {
+            max-width: 100px;
+            margin-bottom: 15px;
+        }
+
+        .info-section h1 {
+            font-size: 24px;
+            margin: 10px 0;
+        }
+
+        .info-section p {
+            font-size: 16px;
+            text-align: center;
+            margin: 0;
+        }
+
+        .divider {
+            width: 2px;
+            background-color: var(--gray-border);
+        }
+
+        .login-container {
+            padding: 30px;
+            text-align: center;
+            flex: 1;
+        }
+
+        h2 {
+            color: var(--blue-primary);
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--gray-border);
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        label {
+            color: var(--gray-text);
+            font-size: 14px;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: var(--blue-primary);
+            color: var(--white);
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: var(--blue-hover);
+        }
+
+        .error-message {
+            color: red;
+            font-size: 14px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+                width: 85%;
+            }
+
+            .info-section {
+                width: 100%;
+                padding: 20px;
+                text-align: center;
+            }
+
+            .login-container {
+                padding: 20px;
+            }
+
+            .divider {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="info-section">
+            <img src="static/images/logo.png" alt="Edubridge Logo">
+            <h1>Welcome to Edubridge</h1>
+            <p><strong>Connert.Share.Learn</strong></p>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="login-container">
+            <h2>Login</h2>
+            {% if error_message %}
+                <p class="error-message">{{ error_message }}</p>
+            {% endif %}
+            <form method="POST" action="{% url 'login_view' %}">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="role">Role</label>
+                    <select id="role" name="role" required>
+                        <option value="stcians">STCians</option>
+                        <option value="student_other">Student (Other Colleges)</option>
+                        <option value="teacher">Teacher</option>
+                        <option value="alumni">Alumni</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username" placeholder="Enter your username" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" placeholder="Enter your password" required>
+                </div>
+                <div class="form-group">
+                    <button type="submit">Login</button>
+                </div>
+                <p>Don't have an account? <a href="{% url 'signup_view' %}">Create a new account</a></p>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
